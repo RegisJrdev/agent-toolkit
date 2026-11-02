@@ -1,17 +1,14 @@
 {
   "hooks": {
-    "PreToolUse": [
+    "SessionStart": [
       {
-        "matcher": "Read|Edit|Write|MultiEdit|NotebookEdit",
+        "matcher": "startup|resume|clear",
         "hooks": [
-          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/exigir-regras.sh" }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/docs-check.sh" }
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/atualizar-toolkit.sh\"",
+            "timeout": 30
+          }
         ]
       }
     ]
