@@ -1,32 +1,26 @@
-# Web: regras do produto
+# Web: padrões compartilhados
 
-Leia antes de qualquer mudança em `../<municipio>-web`. Depois, leia `municipios/<municipio>/web.md` (particularidades do município).
+Leia junto com `municipios/<municipio>.md`. Base: Vue 2, Vuetify 2, Vuex 3, Vue Router 3, vee-validate 3 e Vue CLI 4. Os manifests analisados declaram Vue `^2.6.11`; confirme a instalação antes de usar recursos de 2.7. Não use APIs de Vue/Vuetify 3.
 
-Front-end Vue 2.7 (Options API, JS puro) + Vuetify 2 + Vuex 3 + vee-validate 3.
+Antes de planejar, implementar ou revisar um módulo novo, criar camadas ou mudar suas responsabilidades, leia [a arquitetura compartilhada](arquitetura.md).
 
-## Comandos (yarn)
-- Dev: `yarn serve`. Build: `yarn build --mode develop|homologacao|production` (modo escolhe o `.env.<modo>`).
-- Testes: `yarn test:unit` (Jest 24, `tests/unit/**/*.spec.js`).
-- Lint: `yarn lint --no-fix`. Sem `--no-fix` o vue-cli reescreve arquivos.
+## Código novo
 
-## Regras inegociáveis (código novo)
-- Options API (`export default {}`), sem composition API, sem TypeScript, sem mixins.
-- Chamada HTTP só via service: classe em `src/Services/<Plural>Service.js` usando `Axios()` de `src/plugins/Axios.js`, registrada em `src/Services/index.js` e usada como `this.$services.<nome>Service`. Nunca axios direto no componente.
-- Query string via `{ params }`, nunca montada à mão na URL.
-- Erro: `try/catch` com `this.$handleError(error)`. Loading global: `this.$loaderService.open()/close()`.
-- Toast: `this.$toast.success|danger|warn|info`. **`$toast.error` não existe** (há usos quebrados no legado).
-- Permissão: rota com guard `can()`, tela/menu com `$can([...])`. Mesmos nomes de permissão da API. Não cheque `roleName` nem id de usuário em código novo.
-- Nunca use sintaxe de Vue 3, Vuetify 3, vee-validate 4, Vuex 4 ou vue-router 4.
-- Não refatore telas legadas: só a mudança pedida.
+- Options API e JavaScript, seguindo o projeto. Páginas em `src/Pages/<Dominio>/`; componentes em `src/components/<Dominio>/`. Preserve telas legadas fora do escopo.
+- HTTP via service em `src/Services/`, usando `Axios()` de `src/plugins/Axios.js`; registre em `src/Services/index.js` e consuma por `this.$services`. Use `{ params }` para query string.
+- Leia controller/Resource da API e interceptor local antes de consumir a resposta. Envelopes, erros e decodificação de downloads variam entre municípios.
+- Trate falhas com `this.$handleError` e feche o loading em `finally`. Confira os plugins do projeto; use os métodos de toast existentes, sem presumir `$toast.error`.
+- Formulários com `ValidationObserver`/`ValidationProvider` e as regras registradas do projeto. Confirmações usam os componentes/plugins existentes.
+- Componentes compartilhados `E*` são registrados em `src/plugins/components.js`; procure um existente antes de criar. Estilos locais com `scoped`.
+- Rotas em `src/router/`, registradas no índice; use guard de permissão e `$can` no menu/botões com os mesmos nomes da API. Preserve contratos específicos dos guards existentes; não replique ids fixos nem checagens de papel em código novo.
+- Vuex com módulos namespaced: prefira estado local para listas grandes e formulários. Confira se a persistência está ativa e quais módulos o reducer exclui em `src/store/index.js`; São Bernardo mantém o plugin desativado. As particularidades ficam nos perfis municipais.
 
-## Armadilhas
-- `VUE_APP_API_HOST` termina com `/` e não tem `/api`: paths de service são relativos (`"atendimentos"`), e concatenações como `${VUE_APP_API_HOST}storage/...` dependem da barra.
-- O store inteiro é persistido em localStorage (`src/store/index.js`, `createPersistedState`). Não guarde listas grandes no Vuex.
-- Componentes `E*` são globais (`src/plugins/components.js`); componente compartilhado novo é registrado lá.
-- `.env*` são versionados: não coloque segredo neles.
+## Comandos e validação
 
-## Docs sob demanda
-- Ao criar página, componente, service, rota ou módulo Vuex: `docs/frontend-vue.md`
-- Ao escrever ou rodar testes: `docs/testes.md` (seção Web)
-- Ao consumir endpoint (resposta, erro, paginação, auth): `docs/api-contract.md`
-- Versão instalada de pacote: `../<municipio>-web/node_modules/<pacote>/package.json`
+- `yarn serve`; `yarn build --mode develop|homologacao|production`, conforme os modos existentes. Confira `VUE_APP_API_HOST` e a composição dos paths no Axios/service.
+- `yarn lint --no-fix` evita reescrita automática. Confira a configuração efetiva antes de interpretar falhas.
+- `yarn test:unit` somente onde declarado: Araioses, Parnaíba e Vera Mendes na análise inicial. Nos demais, valide a mudança com os recursos disponíveis; não adicione infraestrutura de testes sem necessidade da tarefa.
+- Testes de componente devem exercitar comportamento relevante e respeitar os plugins do setup local. Informe comandos executados e limitações.
+- CI Web usa Node 16.x nos checkouts analisados. Confira o workflow do município; não atualize a ferramenta implicitamente.
+- Não há `yarn.lock` Web rastreado no conjunto analisado; há `yalc.lock`. Verifique dependências locais antes de instalar. A versão efetiva está em `node_modules/<pacote>/package.json`.
+- Configurações de frontend são públicas: não adicione segredos a `.env*` ou ao bundle.
