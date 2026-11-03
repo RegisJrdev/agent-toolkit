@@ -60,6 +60,14 @@ Confirme que a raiz é a esperada e preserve as alterações existentes. Caminho
 - Valide acesso à escola/franquia e ao ano letivo no servidor. O perfil municipal não dispensa autorização nem isolamento dos dados.
 - Use versões instaladas; na ausência delas, informe a limitação e confira manifest/lock. Consulte a documentação da versão efetiva ao introduzir uso novo de uma API de biblioteca, esclarecer dúvidas ou verificar compatibilidade em mudanças de versão (Context7, se disponível). Reutilize a documentação já consultada enquanto continuar aplicável.
 
+## Diagnóstico de falhas
+
+- Rastreie o fluxo afetado antes de escolher a correção. Diferencie sintoma, hipótese e causa sustentada por evidências.
+- Confira as hipóteses relevantes no código, nos logs ou em uma reprodução. Uma configuração encontrada no repositório não comprova o comportamento do ambiente em execução.
+- Escolha a menor mudança que trate a causa identificada. Investigar o fluxo afetado faz parte da tarefa; preservar o legado não significa copiar uma solução existente sem avaliar sua adequação.
+- Em lentidão ou timeout, siga também a seção de desempenho em [docs/api.md](docs/api.md#desempenho-e-limites). Não presuma que ampliar um limite resolve a causa.
+- Se não puder reproduzir ou medir, registre os indícios e o que falta verificar. Não apresente hipótese como diagnóstico confirmado nem o desaparecimento do sintoma como prova suficiente da correção.
+
 ## Comandos de desenvolvimento
 
 ### Antes de executar
@@ -88,6 +96,7 @@ Confirme que a raiz é a esperada e preserve as alterações existentes. Caminho
 - **Web:** execute lint ao alterar código, inclusive imports ou caminhos. Use testes existentes para o comportamento afetado e build quando necessário. Confira os modos e o destino da API antes de executar.
 - Ao alterar comportamento, adicione ou ajuste testes usando a infraestrutura existente. Se ela estiver ausente, registre a limitação e valide com os recursos disponíveis, sem criar infraestrutura nova fora do escopo.
 - Dimensione as verificações pelo comportamento e pelo risco da mudança. Corrija falhas introduzidas; informe falhas preexistentes e impedimentos de ambiente ou dependências, sem ampliar o escopo para corrigir problemas alheios.
+- Teste o comportamento solicitado ou o mecanismo causal corrigido. Verificar apenas uma configuração, chamada ou linha adicionada não comprova a resolução do problema. Mocks não devem eliminar justamente o comportamento que o teste pretende validar.
 - Para alterações apenas documentais, confira links, caminhos e consistência com as instruções relacionadas. Não é necessário executar a suíte da aplicação.
 
 ## Workflow de desenvolvimento
@@ -119,7 +128,7 @@ Se houver trabalho de outra tarefa, impedimento na troca, falha no fetch ou base
 - Preserve alterações preexistentes. Não reverta nem sobrescreva trabalho do usuário para facilitar a tarefa.
 - Commit, quando solicitado: `tipo(escopo) #ticket descrição em pt-BR`.
 - Antes de entregar, revise o diff e execute `git diff --check`. Se houver commit autorizado, conclua primeiro as verificações pertinentes acima.
-- Ao concluir uma implementação, resuma o que mudou, os comandos de validação executados, seus resultados e as pendências. Não afirme que uma verificação passou sem executá-la.
+- Ao concluir, informe a causa identificada e suas evidências (em correções), a mudança, o comportamento validado e as pendências. Separe implementação de eficácia comprovada; sintaxe e lint não comprovam os critérios de aceitação. Liste comandos e resultados reais.
 
 ## Documentação das mudanças
 

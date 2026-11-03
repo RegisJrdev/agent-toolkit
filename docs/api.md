@@ -44,6 +44,17 @@ Aplicam-se ao código novo e à lógica alterada no escopo da tarefa. Em ajuste 
 - Siga o formatter disponível no município e restrinja a formatação aos arquivos alterados. Não adicione ferramenta ou dependência só para impor uma preferência de estilo.
 - Valide comportamento observável e regras de negócio, incluindo autorização e isolamento. Evite testes que apenas reproduzem a implementação ou dependem de detalhes internos sem necessidade.
 
+## Desempenho e limites
+
+- Em lentidão ou timeout, rastreie requisição, consultas, transformação dos dados, serialização e renderização. Identifique a etapa responsável antes de escolher o alvo da otimização.
+- Investigue consultas em loops, N+1, relações carregadas sob demanda, volume/colunas desnecessários e processamento repetido. A presença de `with()` não encerra a investigação.
+- Confira trabalho implícito nos models e na saída: accessors, `$appends`, casts, eventos/observers pertinentes, Resources e chamadas a `toArray()`/JSON. Eles podem executar lógica ou acessar relações durante a transformação dos dados.
+- Quando possível, compare antes/depois com volume representativo: quantidade e duração das consultas, tempo por etapa e memória. Na ausência de ambiente adequado, apresente a análise estática como indício e registre a medição pendente.
+- Em erros de tempo, identifique qual camada interrompe a operação: cliente HTTP, proxy/servidor, PHP, worker ou gerador de documento. Confira logs e configuração efetiva; não atribua um erro genérico de rede a um timeout sem evidência.
+- Não aumente nem remova limites de tempo ou memória como correção padrão. Qualquer ajuste deve ter justificativa, escopo e impacto explícitos. Diferencie mitigação temporária de correção da causa. Não introduza filas ou cache automaticamente como substituto do diagnóstico.
+- Restrinja otimizações ao consumidor afetado e preserve seu contrato. Antes de remover `appends` ou reduzir colunas, confira os campos utilizados e as chaves necessárias às relações. Não transforme a correção de um relatório em remoção global de atributos dos models.
+- Valide resultados e custo: preserve totais, filtros, autorização e isolamento. Quando a causa envolver consultas repetidas, inclua uma regressão que exercite o fluxo responsável, inclusive a serialização, sem exigir tempos absolutos frágeis. Afirmar que um limite foi desabilitado não comprova a conclusão do relatório.
+
 ## Rotas, permissões e respostas
 
 - Registre rotas do domínio no RouteServiceProvider e confirme middleware de autenticação/autorização; não suponha que o grupo de `routes/api.php` já autentica.
