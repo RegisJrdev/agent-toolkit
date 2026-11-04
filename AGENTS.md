@@ -107,7 +107,7 @@ Este fluxo se aplica aos repositórios municipais de API e Web. Em tarefa que en
 
 1. Confirme raiz, estado do Git e remoto. Preserve mudanças existentes; não use reset, descarte ou stash automático.
 2. Se já estiver na branch desta tarefa, continue nela. Não a recrie nem faça rebase ou merge automático.
-3. Para uma nova branch, identifique o ticket e o padrão municipal no perfil e no repo. Para informações ausentes, siga Dúvidas.
+3. Para uma nova branch, identifique o ticket e consulte o padrão de nomenclatura em `municipios/<municipio>.md`, considerando API e Web separadamente. Confira também o padrão no repositório e os gatilhos em `.github/workflows/`. Para informações ausentes ou divergentes, siga Dúvidas.
 4. Monte um nome curto com prefixo municipal, ticket e descrição. Respeite separadores locais, inclusive `/` onde adotado. Exemplo: `quiterianopolis-7304-melhorias-graficos-home`.
 5. Atualize as referências com `git fetch <remoto>`.
 6. Crie a branch com `git switch -c <branch> <remoto>/main`. Não desenvolva diretamente em `main` ou `homologacao`.

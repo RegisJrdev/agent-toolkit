@@ -2,7 +2,7 @@
 
 Padrão para funcionalidades novas nas APIs Laravel e nas aplicações Web Vue dos municípios. Leia junto com [as regras da API](api.md), [as regras da Web](web.md), conforme o escopo, e com `municipios/<municipio>.md`.
 
-Leia esta doc antes de planejar, implementar ou revisar um módulo novo, criar camadas ou mudar responsabilidades entre elas. Ajustes pontuais no legado preservam a estrutura existente. Particularidades municipais prevalecem sobre a organização genérica, mantendo autorização e isolamento dos dados.
+Esta doc define responsabilidades das camadas, contexto escolar, consistência e contratos entre API e Web. Leia antes de planejar, implementar ou revisar código da API e ao criar módulos ou mudar camadas na Web. Detalhes de implementação, comandos e validação ficam nas regras de cada lado. Particularidades municipais prevalecem sobre a organização genérica, mantendo autorização e isolamento dos dados.
 
 ## Fluxo de uma funcionalidade
 
@@ -27,12 +27,11 @@ O controller chama uma Action quando a operação é um caso de uso simples. Qua
 | Service | Coordenar operações ou encapsular uma integração | `app/Services/` |
 | Model | Mapear persistência, relações, casts e scopes reutilizáveis | `app/Models/` |
 
-- Controller por recurso, com métodos curtos. Use FormRequest e injeção de dependências; não acrescente regras ao controller base legado.
+- Controller por recurso, com métodos curtos. Use FormRequest; não acrescente regras ao controller base legado.
 - Action nova usa `handle`, recebe dados já validados e ids de contexto. Não recebe Request nem devolve resposta HTTP. Devolve o resultado da operação ou sinaliza falha pelo tratamento de erros do projeto.
-- Actions podem ser reutilizadas em controllers, jobs e comandos. Preserve convenções locais existentes, como Actions invocáveis do Censo.
+- Actions podem ser reutilizadas em controllers, jobs e comandos.
 - Service deve ter um propósito claro. Não crie uma classe que apenas repassa chamadas nem uma classe que concentra todas as operações de um domínio.
 - Model não monta resposta HTTP nem resolve o usuário autenticado para decidir qual escola acessar. Reutilize scopes e relações existentes sem esconder o contexto da operação.
-- Mantenha no projeto seus mecanismos de bootstrap, autorização e tratamento de erros. Não migre Kernel, Handler ou RouteServiceProvider como efeito colateral de uma funcionalidade.
 
 ## Contexto escolar e consistência
 
@@ -62,15 +61,14 @@ O controller chama uma Action quando a operação é um caso de uso simples. Qua
 
 Antes de implementar o consumo, defina método, rota, permissão, entrada, resposta, paginação e erros. Confirme o comportamento no controller, nos Resources e no interceptor do município.
 
-Preserve contratos existentes. Uso de Resources, envelopes e códigos de erro varia entre municípios; um exemplo de Vera Mendes não define o contrato dos demais. Mantenha o mesmo nome de permissão nos dois lados e mensagens ao usuário em pt-BR.
+Preserve contratos existentes. Uso de Resources, envelopes e códigos de erro varia entre municípios; um exemplo de Vera Mendes não define o contrato dos demais. Mantenha o mesmo nome de permissão nos dois lados, status HTTP coerentes e mensagens ao usuário em pt-BR.
 
 Registre as particularidades dos contratos no perfil municipal e use referências ao código para os detalhes. Quando mudar um contrato, atualize o perfil e os consumidores envolvidos na mesma tarefa.
 
 ## Simplicidade e evolução do legado
 
-- Cada classe ou componente tem uma responsabilidade clara. Prefira nomes que descrevem o caso de uso, dados explícitos e dependências injetadas.
-- Reutilize código quando houver comportamento comum real. Não introduza interfaces, repositories, DTOs ou novas camadas sem necessidade concreta.
+- Não introduza repositories ou novas camadas sem necessidade concreta. As práticas de implementação estão nos [padrões de desenvolvimento da API](api.md#padrões-de-desenvolvimento) e nas [regras da Web](web.md#código-novo).
 - Em ajuste pontual, mantenha o estilo do arquivo. Lógica nova relevante pode ir para uma Action ou componente próprio, sem reorganizar todo o módulo.
 - Refatoração ampla exige escopo explícito. Preserve variantes municipais e registre problemas fora do pedido como pendências.
-- Teste comportamento, autorização e isolamento conforme o runner e o ambiente do município. Não imponha Pest, SQLite ou infraestrutura de testes ausente no projeto.
-- Particularidades e decisões municipais ficam no perfil `municipios/<municipio>.md`. Documentação extra e ADRs só são criadas quando solicitadas. Padrões compartilhados ficam nesta doc; comandos e armadilhas continuam em `docs/api.md` e `docs/web.md`.
+- Para validar, siga [banco e testes da API](api.md#banco-e-testes) e [comandos e validação da Web](web.md#comandos-e-validação), conforme o escopo e o ambiente do município. Não introduza infraestrutura de testes ausente no projeto.
+- Particularidades e decisões municipais ficam no perfil `municipios/<municipio>.md`. Documentação extra e ADRs só são criadas quando solicitadas. Responsabilidades das camadas e contratos compartilhados ficam nesta doc; implementação, comandos e armadilhas ficam em `docs/api.md` e `docs/web.md`.
