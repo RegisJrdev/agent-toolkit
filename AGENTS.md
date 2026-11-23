@@ -57,6 +57,7 @@ Confirme que a raiz é a esperada e preserve as alterações existentes. Caminho
 
 - O desenvolvimento pode ser feito diretamente. Se usar subagentes, eles também devem ler o perfil municipal e as regras do lado em que atuam.
 - Os padrões de código novo orientam a evolução dos projetos; não descrevem todo o código existente.
+- Escreva em português (pt-BR) tudo o que for novo no código: comentários, docblocks, mensagens ao usuário, nomes de testes e descrições. Nomes de classes, métodos e variáveis seguem o vocabulário do domínio e o idioma do módulo. Ao copiar código de outro município ou projeto, traduza os comentários e as mensagens que estiverem em inglês; não reescreva o restante.
 - Valide acesso à escola/franquia e ao ano letivo no servidor. O perfil municipal não dispensa autorização nem isolamento dos dados.
 - Use versões instaladas; na ausência delas, informe a limitação e confira manifest/lock. Consulte a documentação da versão efetiva ao introduzir uso novo de uma API de biblioteca, esclarecer dúvidas ou verificar compatibilidade em mudanças de versão (Context7, se disponível). Reutilize a documentação já consultada enquanto continuar aplicável.
 
