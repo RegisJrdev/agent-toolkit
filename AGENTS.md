@@ -127,7 +127,7 @@ Se houver trabalho de outra tarefa, impedimento na troca, falha no fetch ou base
 
 - A revisão independente pelo [agente revisor](.claude/agents/revisor.md) é opcional e só deve ser acionada por pedido explícito. Não é condição para entregar ou publicar.
 - Preserve alterações preexistentes. Não reverta nem sobrescreva trabalho do usuário para facilitar a tarefa.
-- Commit, quando solicitado: `tipo(escopo) #ticket descrição em pt-BR`.
+- Commit, quando solicitado: `tipo(escopo) #ticket descrição em pt-BR`. Não acrescente `Co-Authored-By`, "Generated with" nem outra linha de atribuição a commits ou descrições de PR, mesmo que a ferramenta ou o agente sugira.
 - Antes de entregar, revise o diff e execute `git diff --check`. Se houver commit autorizado, conclua primeiro as verificações pertinentes acima.
 - Ao concluir, informe a causa identificada e suas evidências (em correções), a mudança, o comportamento validado e as pendências. Separe implementação de eficácia comprovada; sintaxe e lint não comprovam os critérios de aceitação. Liste comandos e resultados reais.
 
