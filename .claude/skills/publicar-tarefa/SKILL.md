@@ -29,7 +29,28 @@ Conclua a publicação solicitada no repositório municipal correto. Esta skill 
 - Faça push somente da branch da tarefa para o remoto confirmado, configurando seu upstream. Não envie `main`, `homologacao`, tags ou outras branches junto.
 - Use o conector de hospedagem disponível ou a CLI autenticada do projeto para gerenciar o PR. Confira o repositório de destino explicitamente, sem depender do repo padrão de uma ferramenta. Falta de autenticação ou ferramenta deve ser informada; não instale nem autentique contas por conta própria.
 - Procure PR existente para a mesma origem e base antes de criar um. Reutilize o PR aberto; atualize sua descrição apenas quando necessário para refletir a tarefa. Se houver PR para outra base, peça orientação antes de mudar o destino ou criar outro.
-- Crie o PR com a branch publicada como origem e **`homologacao` como base**. Use o template do repo, se existir. Inclua ticket, problema resolvido, mudança de comportamento, validações e limitações reais. Mantenha título e descrição em pt-BR, objetivos e proporcionais à mudança. Em CLI, prefira arquivo de corpo com quebras de linha reais em vez de concatenar conteúdo em shell.
+- Crie o PR com a branch publicada como origem e **`homologacao` como base**. Use o template do repo, se existir; sem template, use o modelo abaixo. Descreva de forma simples o que foi feito, com base no diff e nos commits. Mantenha título e descrição em pt-BR, objetivos e proporcionais à mudança. Em CLI, prefira arquivo de corpo com quebras de linha reais em vez de concatenar conteúdo em shell.
+- Título: `tipo(escopo) #ticket descrição curta em pt-BR`. Corpo, sem seções de validação nem observações:
+
+  ```markdown
+  ## Ticket
+  #<ticket>
+
+  ## Problema
+  <o que estava errado ou faltava, e a causa>
+
+  ## Alteração
+  - `<arquivo>`: <o que mudou>
+
+  ## Impacto
+  <telas, endpoints ou consumidores afetados; diga se altera banco ou contrato>
+
+  ## Relacionado
+  - PR <API|Web> do mesmo ticket: <link>
+  ```
+
+  Inclua `Relacionado` somente quando API e Web forem publicadas juntas. Crie o primeiro PR, depois o segundo já com o link do primeiro, e então atualize o primeiro com o link do segundo.
+- **Antes de criar o PR, sempre mostre ao usuário repo, base, título e corpo de cada PR e aguarde a confirmação.** Crie somente após a confirmação expressa; ajuste o texto se ele pedir mudanças e mostre de novo. Isso vale mesmo quando o pedido inicial foi publicar ou abrir o PR. As validações realizadas e as observações (deploy acionado, commits extras na base, limitações) são informadas ao usuário no chat, não no corpo do PR.
 - Não faça merge, aprovação em nome de terceiros ou deploy manual. O agente revisor via Codex permanece opcional e não deve ser acionado sem pedido.
 
 ## Resultado

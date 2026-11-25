@@ -120,7 +120,7 @@ Se houver trabalho de outra tarefa, impedimento na troca, falha no fetch ou base
 1. Implemente e execute as validações pertinentes.
 2. Quando houver pedido de publicação, confira os gatilhos conhecidos no perfil e o workflow efetivo em `.github/workflows/`. Informe se o push acionará deploy, mesmo antes do merge do PR.
 3. Confirme a existência de `homologacao` no remoto. Se faltar, siga Dúvidas; não substitua por `main` nem crie uma base automaticamente.
-4. Siga a skill [publicar-tarefa](.claude/skills/publicar-tarefa/SKILL.md): commit das alterações necessárias, push da branch e criação ou reutilização do PR para `homologacao`.
+4. Siga a skill [publicar-tarefa](.claude/skills/publicar-tarefa/SKILL.md): commit das alterações necessárias, push da branch e criação ou reutilização do PR para `homologacao`. Mostre título e descrição do PR e só crie após a confirmação do usuário.
 5. Respeite restrições expressas, como abrir PR apenas de commits existentes. Entregue o link do PR e as validações realizadas.
 
 ## Git e entrega
